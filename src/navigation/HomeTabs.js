@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { StyleSheet, View } from 'react-native'
-import { Fontisto } from '@expo/vector-icons'
 import { COLORS, SPACING } from '../utils/theme'
+import { HomeIcon, IconContainer, TicketIcon, UserIcon, CartIcon } from '../icons'
 
 const HomeScreen = () => {
   return <View />
@@ -11,23 +11,31 @@ const ProfileScreen = () => {
   return <View />
 }
 
-const FavoriteScreen = () => {
+const CartScreen = () => {
+  return <View />
+}
+
+const TicketsScreen = () => {
   return <View />
 }
 
 const Tab = createBottomTabNavigator()
 
 const TAB_ICON = {
-  Home: 'home',
-  Profile: 'person',
-  Favorites: 'bookmark-alt'
+  Home: <HomeIcon />,
+  Tickets: <TicketIcon />,
+  Cart: <CartIcon />,
+  Profile: <UserIcon />
 }
+
 const screenOptions = ({ route }) => {
-  const iconName = TAB_ICON[route.name]
+  const icon = TAB_ICON[route.name]
 
   return {
     tabBarIcon: ({ size, color }) => (
-      <Fontisto name={iconName} size={size} color={color} />
+      <IconContainer size={size} color={color}>
+        {icon}
+      </IconContainer>
     ),
     tabBarActiveTintColor: COLORS.primary,
     tabBarInactiveTintColor: COLORS.inactive,
@@ -45,9 +53,14 @@ export function HomeTabs () {
         component={HomeScreen}
       />
       <Tab.Screen
-        name='Favorites'
-        options={{ title: 'Favoritos' }}
-        component={FavoriteScreen}
+        name='Tickets'
+        options={{ title: 'Tickets' }}
+        component={TicketsScreen}
+      />
+      <Tab.Screen
+        name='Cart'
+        options={{ title: 'Carrito' }}
+        component={CartScreen}
       />
       <Tab.Screen
         name='Profile'
