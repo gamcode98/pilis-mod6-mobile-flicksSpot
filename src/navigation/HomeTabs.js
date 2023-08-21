@@ -1,23 +1,11 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { COLORS, SPACING } from '../utils/theme'
 import { HomeIcon, IconContainer, TicketIcon, UserIcon, CartIcon } from '../icons'
-
-const HomeScreen = () => {
-  return <View />
-}
-
-const ProfileScreen = () => {
-  return <View />
-}
-
-const CartScreen = () => {
-  return <View />
-}
-
-const TicketsScreen = () => {
-  return <View />
-}
+import { HomeScreen } from '../screens/HomeScreen'
+import { HomeV2Screen } from '../screens/Homev2Screen'
+import { Homev3Screen } from '../screens/Homev3Screen'
+import { Homev4Screen } from '../screens/Homev4Screen'
 
 const Tab = createBottomTabNavigator()
 
@@ -50,22 +38,22 @@ export function HomeTabs () {
       <Tab.Screen
         name='Home'
         options={{ title: 'Inicio' }}
-        component={HomeScreen}
+        component={HomeV2Screen}
       />
       <Tab.Screen
         name='Tickets'
         options={{ title: 'Tickets' }}
-        component={TicketsScreen}
+        component={HomeScreen}
       />
       <Tab.Screen
         name='Cart'
         options={{ title: 'Carrito' }}
-        component={CartScreen}
+        component={Homev3Screen}
       />
       <Tab.Screen
         name='Profile'
         options={{ title: 'Perfil' }}
-        component={ProfileScreen}
+        component={Homev4Screen}
       />
     </Tab.Navigator>
   )
