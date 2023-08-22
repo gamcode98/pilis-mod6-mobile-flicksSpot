@@ -1,14 +1,24 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { COLORS, SPACING } from '../utils/theme'
 import { HomeIcon, IconContainer, TicketIcon, UserIcon, CartIcon } from '../icons'
+import { SECURE_STORE_KEYS, removeItem } from '../utils'
 
 const HomeScreen = () => {
   return <View />
 }
 
 const ProfileScreen = () => {
-  return <View />
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <TouchableOpacity
+        style={{ padding: 8, backgroundColor: COLORS.primary, borderRadius: 4 }}
+        onPress={async () => await removeItem(SECURE_STORE_KEYS.ONBOARDED)}
+      >
+        <Text style={{ color: COLORS.black }}>Reset Onboarding</Text>
+      </TouchableOpacity>
+    </View>
+  )
 }
 
 const CartScreen = () => {
