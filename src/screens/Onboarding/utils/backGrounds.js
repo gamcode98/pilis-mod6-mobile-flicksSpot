@@ -1,1 +1,1 @@
-export const backGrounds = ['#F7FD04', '#F9B208', '#F98404', '#FC5404']
+export const backGrounds = ['#F9B208', '#FDBE33', '#E0A000', '#FFC74A']

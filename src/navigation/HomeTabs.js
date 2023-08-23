@@ -3,10 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { COLORS, SPACING } from '../utils/theme'
 import { HomeIcon, IconContainer, TicketIcon, UserIcon, CartIcon } from '../icons'
 import { SECURE_STORE_KEYS, removeItem } from '../utils'
-
-const HomeScreen = () => {
-  return <View />
-}
+import { HomeScreen } from '../screens/Home/HomeScreen'
 
 const ProfileScreen = () => {
   return (

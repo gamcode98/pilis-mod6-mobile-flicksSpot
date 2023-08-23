@@ -1,3 +1,4 @@
+export * from './AdjustmentsIcon'
 export * from './CartIcon'
 export * from './HomeIcon'
 export * from './IconContainer'
