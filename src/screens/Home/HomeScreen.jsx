@@ -5,7 +5,7 @@ import { Loader } from '../../components/Loader'
 import { MovieItem } from './components/MovieItem'
 import { styles } from './HomeScreen.styles'
 import { configCarousel } from './utils/configCarousel'
-import { AdjustmentsIcon, IconContainer } from '../../icons'
+import { AdjustmentsIcon, IconContainer, XCircleIcon } from '../../icons'
 import { useMovies } from './hooks/useMovies'
 
 const { FULL_SIZE } = configCarousel
@@ -61,13 +61,84 @@ export const HomeScreen = () => {
             >
 
               <View style={styles.modalView}>
-                <Text style={styles.modalText}>Hello World!</Text>
-                <Pressable
-                  style={[styles.button, styles.buttonClose]}
+                <View style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  marginBottom: 32
+                }}
+                >
+                  <Pressable
+                    onPress={() => setModalVisible(!modalVisible)}
+                  >
+                    <IconContainer color='#F9B208'>
+                      <XCircleIcon />
+                    </IconContainer>
+                  </Pressable>
+                  <Text style={{
+                    textAlign: 'center',
+                    fontSize: 20,
+                    fontWeight: '800'
+                  }}
+                  >Filtros
+                  </Text>
+                  <TouchableOpacity>
+                    <Text style={{ color: '#F9B208', fontWeight: '600' }}>Reiniciar</Text>
+                  </TouchableOpacity>
+                </View>
+                <View style={{ marginBottom: 16 }}>
+                  <Text style={{ fontWeight: '800', marginBottom: 16 }}>Sala</Text>
+                  <View style={{ flexDirection: 'row', gap: 16, flexWrap: 'wrap' }}>
+                    {['Lux', 'Estelar', 'Tesla', 'Apollo', 'Shiba'].map(room => (
+                      <TouchableOpacity key={room}>
+                        <Text style={{
+                          borderRadius: 8,
+                          borderWidth: 1,
+                          padding: 8,
+                          textAlign: 'center'
+                        }}
+                        >{room}</Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                </View>
+                <View style={{ marginBottom: 32 }}>
+                  <Text style={{ fontWeight: '800', marginBottom: 16 }}>Idioma</Text>
+                  <View style={{ flexDirection: 'row', gap: 16 }}>
+                    <TouchableOpacity>
+                      <Text style={{
+                        borderRadius: 8,
+                        borderWidth: 1,
+                        padding: 8,
+                        textAlign: 'center'
+                      }}
+                      >Español</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+                      <Text style={{
+                        borderRadius: 8,
+                        borderWidth: 1,
+                        padding: 8,
+                        textAlign: 'center'
+                      }}
+                      >Subtitulada</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+
+                <TouchableOpacity
                   onPress={() => setModalVisible(!modalVisible)}
                 >
-                  <Text style={styles.textStyle}>Hide Modal</Text>
-                </Pressable>
+                  <Text style={{
+                    borderRadius: 8,
+                    paddingVertical: 16,
+                    textAlign: 'center',
+                    backgroundColor: '#F9B208',
+                    color: '#fff',
+                    fontWeight: '800'
+                  }}
+                  >Aplicar</Text>
+                </TouchableOpacity>
               </View>
 
             </Modal>

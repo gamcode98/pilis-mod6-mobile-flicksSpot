@@ -71,8 +71,6 @@ export const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
-    padding: 35,
-    alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -85,7 +83,9 @@ export const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    height: ITEM_HEIGHT / 1.2
+    height: ITEM_HEIGHT / 1.2,
+    padding: 16,
+    paddingTop: 32
   },
   button: {
     borderRadius: 20,
