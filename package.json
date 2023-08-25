@@ -21,7 +21,8 @@
     "react-hook-form": "^7.45.4",
     "react-native": "0.72.4",
     "react-native-svg": "13.9.0",
-    "yup": "^1.2.0"
+    "yup": "^1.2.0",
+    "expo-linear-gradient": "~12.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
