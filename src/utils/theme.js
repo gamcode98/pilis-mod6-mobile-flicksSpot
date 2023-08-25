@@ -1,4 +1,6 @@
-import { Platform } from 'react-native'
+import { Platform, Dimensions } from 'react-native'
+
+export const { width, height } = Dimensions.get('window')
 
 export const COLORS = {
   primary: '#F9B208',

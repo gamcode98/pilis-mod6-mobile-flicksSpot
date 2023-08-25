@@ -1,7 +1,7 @@
 import { useRef } from 'react'
 import { Animated, Text, Image, View, StyleSheet, Dimensions, TouchableOpacity } from 'react-native'
 import { SECURE_STORE_KEYS, saveItem } from '../../utils'
-import { Indicator } from './components'
+import { Backdrop, Indicator, Square } from './components'
 import { DATA } from './utils/data'
 
 const { width } = Dimensions.get('screen')
@@ -19,8 +19,8 @@ export const OnboardingScreen = ({ navigation }) => {
   return (
 
     <View style={styles.container}>
-      {/* <Backdrop scrollX={scrollX} /> */}
-      {/* <Square scrollX={scrollX} /> */}
+      <Backdrop scrollX={scrollX} />
+      <Square scrollX={scrollX} />
       <Animated.FlatList
         data={DATA}
         scrollEventThrottle={32}
@@ -52,7 +52,7 @@ export const OnboardingScreen = ({ navigation }) => {
                 {item.key === '3571603' &&
                   <TouchableOpacity
                     style={{
-                      backgroundColor: '#F9B208',
+                      backgroundColor: '#fff',
                       paddingVertical: 12,
                       paddingHorizontal: 16,
                       borderRadius: 8,
