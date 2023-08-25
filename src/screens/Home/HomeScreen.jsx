@@ -10,7 +10,7 @@ import { useMovies } from './hooks/useMovies'
 
 const { FULL_SIZE } = configCarousel
 
-export const HomeScreen = () => {
+export const HomeScreen = ({ navigation }) => {
   const scrollX = useRef(new Animated.Value(0)).current
   const [modalVisible, setModalVisible] = useState(false)
 
@@ -156,7 +156,13 @@ export const HomeScreen = () => {
                 { useNativeDriver: true }
               )}
               keyExtractor={item => item.id}
-              renderItem={({ item, index }) => <MovieItem item={item} index={index} scrollX={scrollX} />}
+              renderItem={({ item, index }) =>
+                <MovieItem
+                  item={item}
+                  index={index}
+                  scrollX={scrollX}
+                  navigation={navigation}
+                />}
             />
           </View>
       }

@@ -5,7 +5,7 @@ import { styles } from './../HomeScreen.styles'
 const { RADIUS, FULL_SIZE } = configCarousel
 
 export const MovieItem = (props) => {
-  const { item, index, scrollX } = props
+  const { item, index, scrollX, navigation } = props
 
   const inputRange = [(index - 1) * FULL_SIZE, index * FULL_SIZE, (index + 1) * FULL_SIZE]
 
@@ -14,8 +14,16 @@ export const MovieItem = (props) => {
     outputRange: [1, 1.1, 1]
   })
 
+  const goCinemaShowDetailScreen = () => {
+    navigation.navigate('CinemaShowDetailScreen', { item })
+  }
+
   return (
-    <TouchableOpacity style={styles.itemContainer}>
+    <TouchableOpacity
+      onPress={goCinemaShowDetailScreen}
+      activeOpacity={1}
+      style={styles.itemContainer}
+    >
       <View style={[StyleSheet.absoluteFillObject, { overflow: 'hidden', borderRadius: RADIUS }]}>
         <Animated.Image
           source={{ uri: item.image.url }}
