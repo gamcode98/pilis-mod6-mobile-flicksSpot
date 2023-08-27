@@ -5,7 +5,7 @@ export const getTickets = async () => {
 
   return fetch(url, {
     headers: {
-      Authorization: 'Bearer ' + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsInJvbCI6ImN1c3RvbWVyIiwiaWF0IjoxNjkzMDA1OTk1LCJleHAiOjE2OTMwMTMxOTV9.vvczttLpYUIj_b5pQpVdPDJX0HLZx3z9W6NgAOGlon4'
+      Authorization: 'Bearer ' + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsInJvbCI6ImN1c3RvbWVyIiwiaWF0IjoxNjkzMTQzMjgwLCJleHAiOjE2OTMxNTA0ODB9.YAw3Fhc9SjsVXa53OrGYzMk42AmUlWcgfTa9FsgWyog'
     }
   })
     .then(response => response.json())
