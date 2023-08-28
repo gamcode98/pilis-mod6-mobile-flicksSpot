@@ -1,13 +1,11 @@
-import { StyleSheet, StatusBar, Dimensions } from 'react-native'
+import { StyleSheet, Dimensions } from 'react-native'
 import { COLORS } from '../../utils/theme'
 
 const { width, height } = Dimensions.get('screen')
 
 export const styles = StyleSheet.create({
   imageContainer: {
-    // height: 350,
     position: 'relative'
-    // marginBottom: SPACING.lg
   },
   linearGradient: {
     position: 'absolute',
@@ -86,5 +84,48 @@ export const styles = StyleSheet.create({
   },
   availableDatesTitle: {
     marginBottom: 8
+  },
+  availableSchedulesContainer: {
+    marginBottom: 16
+  },
+  availableSchedulesTitle: {
+    marginBottom: 8
+  },
+  itemSeparator: {
+    marginHorizontal: 8
+  },
+  schedulesContainer: {
+    marginBottom: 16
+  },
+  inputPriceTitle: {
+    marginBottom: 8
+  },
+  containerInputPrice: {
+    marginBottom: 16
+  },
+  inputPrice: {
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    marginBottom: 8
+  },
+  totalPaymentTitle: {
+    marginBottom: 8
+  },
+  btnAddToCart: {
+    backgroundColor: COLORS.primary,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    marginBottom: 32,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8
+  },
+  addToCartText: {
+    fontWeight: '700',
+    fontSize: 16
   }
 })
