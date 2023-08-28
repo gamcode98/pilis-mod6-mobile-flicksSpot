@@ -6,8 +6,6 @@ export const DateItem = (props) => {
 
   const { day, month, numberDay } = formatDate(date)
 
-  // console.log({ selectedDate, date })
-
   return (
     <TouchableOpacity
       onPress={() => handleSelectDate(date)}

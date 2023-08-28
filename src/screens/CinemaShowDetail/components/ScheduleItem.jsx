@@ -1,28 +1,29 @@
 import { TouchableOpacity, Text } from 'react-native'
+import { formatTime } from '../utils/formatTime'
 
 export const ScheduleItem = (props) => {
-  const { hour, minutes } = props
+  const { hour, minutes, selectedSchedule, handleSelectSchedule } = props
 
-  const formatTime = () => {
-    if (hour > 12) {
-      const formattedTime = `${hour.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')} PM`
-      return formattedTime
-    } else {
-      const formattedTime = `${hour.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')} AM`
-      return formattedTime
-    }
-  }
+  const time = formatTime(hour, minutes)
+  const selectedTime = formatTime(selectedSchedule.hour, selectedSchedule.minutes)
 
   return (
     <TouchableOpacity
+      onPress={() => handleSelectSchedule(hour, minutes)}
       style={{
         paddingVertical: 8,
         paddingHorizontal: 16,
         borderWidth: 1,
-        borderRadius: 8
+        borderRadius: 8,
+        borderColor: selectedTime === time ? '#F9B208' : '#000'
       }}
     >
-      <Text>{formatTime()}</Text>
+      <Text
+        style={{
+          color: selectedTime === time ? '#F9B208' : '#000'
+        }}
+      >{time}
+      </Text>
     </TouchableOpacity>
   )
 }

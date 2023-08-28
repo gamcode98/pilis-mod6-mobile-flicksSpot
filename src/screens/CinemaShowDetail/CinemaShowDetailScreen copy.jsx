@@ -1,92 +1,52 @@
-/* eslint-disable no-prototype-builtins */
 import { FlatList, Image, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { styles } from './CinemaShowDetailScreen.styles'
+// import { configCarousel } from './utils/configCarousel'
 import { useState } from 'react'
 import { DateItem } from './components/DateItem'
 import { ScheduleItem } from './components/ScheduleItem'
 import { CartIcon, IconContainer } from '../../icons'
-import { formatHalls } from './utils/formatHalls'
 
-export const CinemaShowDetailScreen = (props) => {
+// const { FULL_SIZE } = configCarousel
+
+export const CinemaShowDetailScreenCopy = (props) => {
   const { route } = props
   const { item: { image, title, gender, description, cinemaShows } } = route.params
-  const { halls } = formatHalls(cinemaShows)
-  const [selectedHall, setSelectedHall] = useState(halls[0])
-  const [availableCinemaShows, setAvailableCinemaShows] = useState(cinemaShows[`${halls[0].id}-${halls[0].name}`])
-  const [selectedDate, setSelectedDate] = useState(() => {
-    const hallObject = cinemaShows[`${halls[0].id}-${halls[0].name}`]
-    const datesInHall = Object.keys(hallObject)
-    return datesInHall[0]
+  const [selectedHall, setSelectedHall] = useState(cinemaShows[0].room)
+  const [selectedDate, setSelectedDate] = useState(cinemaShows[0].date)
+  const [availableCinemaShows, setAvailableCinemaShows] = useState(() => {
+    return cinemaShows.filter(cinemaShow => cinemaShow.room.id === cinemaShows[0].room.id)
   })
-  const [availableSchedules, setAvailableSchedules] = useState(() => {
-    const hallObject = cinemaShows[`${halls[0].id}-${halls[0].name}`]
-    const datesInHall = Object.keys(hallObject)
-    const schedulesInDate = hallObject[datesInHall[0]]
-    console.log({ schedulesInDate })
-    return schedulesInDate
-  })
-  const [selectedSchedule, setSelectedSchedule] = useState(() => {
-    const hallObject = cinemaShows[`${halls[0].id}-${halls[0].name}`]
-    const datesInHall = Object.keys(hallObject)
-    const schedulesInDate = hallObject[datesInHall[0]]
-    return {
-      hour: schedulesInDate[0].hour,
-      minutes: schedulesInDate[0].minutes
-    }
-  })
+  const [availableSchedules, setAvailableSchedules] = useState([{
+    id: cinemaShows[0].id,
+    hour: cinemaShows[0].hour,
+    minutes: cinemaShows[0].minutes
+  }])
   const [totalPayment, setTotalPayment] = useState(0)
+
+  const halls = cinemaShows
+    .map(cinemaShow => cinemaShow.room)
+    .filter((hall, index, self) => {
+      return self.findIndex((h) => h.name === hall.name) === index
+    })
 
   const handleSelectHall = (hall) => {
     setSelectedHall(hall)
-    setAvailableCinemaShows(cinemaShows[`${hall.id}-${hall.name}`])
-    setSelectedDate(() => {
-      const hallObject = cinemaShows[`${hall.id}-${hall.name}`]
-      const datesInHall = Object.keys(hallObject)
-      return datesInHall[0]
-    })
-    setAvailableSchedules(() => {
-      const hallObject = cinemaShows[`${hall.id}-${hall.name}`]
-      const datesInHall = Object.keys(hallObject)
-      const schedulesInDate = hallObject[datesInHall[0]]
-      return schedulesInDate
-    })
-    setSelectedSchedule(() => {
-      const hallObject = cinemaShows[`${hall.id}-${hall.name}`]
-      const datesInHall = Object.keys(hallObject)
-      const schedulesInDate = hallObject[datesInHall[0]]
-      return {
-        hour: schedulesInDate[0].hour,
-        minutes: schedulesInDate[0].minutes
-      }
-    })
+    const data = cinemaShows.filter(cinemaShow => cinemaShow.room.id === hall.id)
+    setSelectedDate(data[0].date)
+    setAvailableCinemaShows(data)
+    const result = data.filter(cinemaShow => cinemaShow.date === data[0].date)
+    setAvailableSchedules(result)
   }
 
   const handleSelectDate = (date) => {
     setSelectedDate(date)
-    setAvailableSchedules(() => {
-      const schedulesInDate = cinemaShows[`${selectedHall.id}-${selectedHall.name}`][date]
-      return schedulesInDate
-    })
-    setSelectedSchedule(() => {
-      const schedulesInDate = cinemaShows[`${selectedHall.id}-${selectedHall.name}`][date]
-      return {
-        hour: schedulesInDate[0].hour,
-        minutes: schedulesInDate[0].minutes
-      }
-    })
-  }
-
-  const handleSelectSchedule = (hour, minutes) => {
-    setSelectedSchedule(() => {
-      const schedulesInDate = cinemaShows[`${selectedHall.id}-${selectedHall.name}`][selectedDate]
-      const foundSchedule = schedulesInDate.find(schedule => schedule.hour === hour && schedule.minutes === minutes)
-      return foundSchedule
-    })
+    const result = availableCinemaShows.filter(cinemaShow => cinemaShow.date === date)
+    setAvailableSchedules(result)
   }
 
   const handleTotalPayment = (value) => {
-    const { price } = availableSchedules[0]
+    const { price } = availableCinemaShows.find(cinemaShow => cinemaShow.date === selectedDate)
     setTotalPayment(value * price)
   }
 
@@ -130,11 +90,11 @@ export const CinemaShowDetailScreen = (props) => {
               halls.map(hall => (
                 <TouchableOpacity
                   key={hall.id}
-                  style={[styles.hall, { borderColor: selectedHall.id === hall.id ? '#F9B208' : '#000' }]}
+                  style={[styles.hall, { borderColor: selectedHall?.id === hall.id ? '#F9B208' : '#000' }]}
                   onPress={() => handleSelectHall(hall)}
                 >
                   <Text style={{
-                    color: selectedHall.id === hall.id ? '#F9B208' : '#000'
+                    color: selectedHall?.id === hall.id ? '#F9B208' : '#000'
                   }}
                   >{hall.name}
                   </Text>
@@ -145,16 +105,16 @@ export const CinemaShowDetailScreen = (props) => {
           <Text style={styles.availableDatesTitle}>Fechas disponibles:</Text>
           <View style={{ marginBottom: 16 }}>
             <FlatList
-              data={Object.keys(availableCinemaShows)}
+              data={availableCinemaShows}
               horizontal
               showsHorizontalScrollIndicator={false}
               // snapToInterval={FULL_SIZE}
               ItemSeparatorComponent={<Text style={{ marginHorizontal: 8 }} />}
               decelerationRate='fast'
-              keyExtractor={item => item}
-              renderItem={({ item }) =>
+              keyExtractor={item => item.id}
+              renderItem={({ item: { date } }) =>
                 <DateItem
-                  date={item}
+                  date={date}
                   selectedDate={selectedDate}
                   handleSelectDate={handleSelectDate}
                 />}
@@ -170,13 +130,7 @@ export const CinemaShowDetailScreen = (props) => {
               ItemSeparatorComponent={<Text style={{ marginHorizontal: 8 }} />}
               decelerationRate='fast'
               keyExtractor={item => item.id}
-              renderItem={({ item: { hour, minutes } }) =>
-                <ScheduleItem
-                  selectedSchedule={selectedSchedule}
-                  handleSelectSchedule={handleSelectSchedule}
-                  hour={hour}
-                  minutes={minutes}
-                />}
+              renderItem={({ item: { hour, minutes } }) => <ScheduleItem hour={hour} minutes={minutes} />}
             />
           </View>
           <Text style={{ marginBottom: 8 }}>Cantidad de boletos:</Text>
