@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { COLORS, SPACING } from '../utils/theme'
 import { HomeIcon, IconContainer, TicketIcon, UserIcon, CartIcon } from '../icons'
 import { SECURE_STORE_KEYS, removeItem } from '../utils'
-import { HomeScreen, TicketScreen } from '../screens'
+import { HomeScreen, TicketScreen, CartScreen } from '../screens'
 
 const ProfileScreen = () => {
   return (
@@ -16,10 +16,6 @@ const ProfileScreen = () => {
       </TouchableOpacity>
     </View>
   )
-}
-
-const CartScreen = () => {
-  return <View />
 }
 
 const Tab = createBottomTabNavigator()
