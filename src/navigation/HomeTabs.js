@@ -4,19 +4,7 @@ import { COLORS, SPACING } from '../utils/theme'
 import { HomeIcon, IconContainer, TicketIcon, UserIcon, CartIcon } from '../icons'
 import { SECURE_STORE_KEYS, removeItem } from '../utils'
 import { HomeScreen } from '../screens/Home/HomeScreen'
-
-const ProfileScreen = () => {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <TouchableOpacity
-        style={{ padding: 8, backgroundColor: COLORS.primary, borderRadius: 4 }}
-        onPress={async () => await removeItem(SECURE_STORE_KEYS.ONBOARDED)}
-      >
-        <Text style={{ color: COLORS.black }}>Reset Onboarding</Text>
-      </TouchableOpacity>
-    </View>
-  )
-}
+import { ProfileScreen } from '../screens/Profile/ProfileScreen'
 
 const CartScreen = () => {
   return <View />
@@ -51,7 +39,7 @@ const screenOptions = ({ route }) => {
   }
 }
 
-export function HomeTabs () {
+export function HomeTabs() {
   return (
     <Tab.Navigator screenOptions={screenOptions}>
       <Tab.Screen
