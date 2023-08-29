@@ -3,20 +3,8 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { COLORS, SPACING } from '../utils/theme'
 import { HomeIcon, IconContainer, TicketIcon, UserIcon, CartIcon } from '../icons'
 import { SECURE_STORE_KEYS, removeItem } from '../utils'
+import { ProfileScreen } from '../screens/Profile/ProfileScreen'
 import { HomeScreen, TicketScreen, CartScreen } from '../screens'
-
-const ProfileScreen = () => {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <TouchableOpacity
-        style={{ padding: 8, backgroundColor: COLORS.primary, borderRadius: 4 }}
-        onPress={async () => await removeItem(SECURE_STORE_KEYS.ONBOARDED)}
-      >
-        <Text style={{ color: COLORS.black }}>Reset Onboarding</Text>
-      </TouchableOpacity>
-    </View>
-  )
-}
 
 const Tab = createBottomTabNavigator()
 
@@ -43,7 +31,7 @@ const screenOptions = ({ route }) => {
   }
 }
 
-export function HomeTabs () {
+export function HomeTabs() {
   return (
     <Tab.Navigator screenOptions={screenOptions}>
       <Tab.Screen
