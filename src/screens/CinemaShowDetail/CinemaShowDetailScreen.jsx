@@ -9,7 +9,7 @@ import { styles } from './CinemaShowDetailScreen.styles'
 import { SECURE_STORE_KEYS, getItem, saveItem } from '../../utils'
 
 export const CinemaShowDetailScreen = (props) => {
-  const { route } = props
+  const { route, navigation } = props
   const { item: { image, title, gender, description, cinemaShows } } = route.params
   const { halls } = formatHalls(cinemaShows)
 
@@ -117,6 +117,7 @@ export const CinemaShowDetailScreen = (props) => {
       const items = [item]
       await saveItem(SECURE_STORE_KEYS.CART, JSON.stringify(items))
       ToastAndroid.show('Agregado al carrito', ToastAndroid.SHORT)
+      navigation.navigate('Cart', { reload: true })
       return
     }
 
@@ -133,9 +134,11 @@ export const CinemaShowDetailScreen = (props) => {
       }
       await saveItem(SECURE_STORE_KEYS.CART, JSON.stringify(cartParsed))
       ToastAndroid.show('Agregado al carrito', ToastAndroid.SHORT)
+      navigation.navigate('Cart', { reload: true })
     } else {
       await saveItem(SECURE_STORE_KEYS.CART, JSON.stringify([...cartParsed, item]))
       ToastAndroid.show('Agregado al carrito', ToastAndroid.SHORT)
+      navigation.navigate('Cart', { reload: true })
     }
   }
 
