@@ -1,10 +1,8 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { COLORS, SPACING } from '../utils/theme'
 import { HomeIcon, IconContainer, TicketIcon, UserIcon, CartIcon } from '../icons'
-import { SECURE_STORE_KEYS, removeItem } from '../utils'
-import { ProfileScreen } from '../screens/Profile/ProfileScreen'
-import { HomeScreen, TicketScreen, CartScreen } from '../screens'
+import { HomeScreen, TicketScreen, CartScreen, ProfileScreen } from '../screens'
 
 const Tab = createBottomTabNavigator()
 
@@ -31,7 +29,7 @@ const screenOptions = ({ route }) => {
   }
 }
 
-export function HomeTabs() {
+export function HomeTabs () {
   return (
     <Tab.Navigator screenOptions={screenOptions}>
       <Tab.Screen

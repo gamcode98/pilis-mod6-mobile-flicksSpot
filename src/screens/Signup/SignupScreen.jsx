@@ -1,16 +1,15 @@
-/* eslint-disable react/jsx-closing-bracket-location */
-/* eslint-disable react/jsx-indent-props */
-/* eslint-disable react/jsx-closing-tag-location */
-import React, { useState } from 'react'
+/* eslint-disable react/jsx-indent */
+import { useState } from 'react'
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native'
-import { styles } from './SignupScreen.styles'
 import { useForm } from 'react-hook-form'
-import { Entypo } from '@expo/vector-icons'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { styles } from './SignupScreen.styles'
 import { LoaderBtn } from '../../components/LoaderBtn'
 import { signUpSchema } from '../../utils/validations'
 import { useSignup } from './hooks/useSignup'
 import { InputControlled } from '../../components/InputdControlled'
+import { EyeIcon, EyeSlashIcon, IconContainer } from '../../icons'
+
 export const SignupScreen = ({ onSwitchToLogin }) => {
   const [isPasswordVisible, setPasswordVisible] = useState(false)
   const { isLoading, userSignup } = useSignup(onSwitchToLogin)
@@ -60,9 +59,9 @@ export const SignupScreen = ({ onSwitchToLogin }) => {
             style={styles.toggleIcon}
           >
             <Text style={styles.passwordToggleText}>
-              {isPasswordVisible
-                ? <Entypo name='eye-with-line' size={24} color='black' />
-                : <Entypo name='eye' size={24} color='black' />}
+            {isPasswordVisible
+              ? <IconContainer size={24}><EyeSlashIcon /></IconContainer>
+              : <IconContainer size={24}><EyeIcon /></IconContainer>}
             </Text>
           </TouchableOpacity>
         </InputControlled>
@@ -71,12 +70,12 @@ export const SignupScreen = ({ onSwitchToLogin }) => {
           isLoading
             ? <LoaderBtn />
             : <TouchableOpacity
-              style={styles.button}
-              disabled={isLoading}
-              onPress={handleSubmit(handleSignUp)}
-            >
+                style={styles.button}
+                disabled={isLoading}
+                onPress={handleSubmit(handleSignUp)}
+              >
               <Text style={styles.buttonText}>Registrarme</Text>
-            </TouchableOpacity>
+              </TouchableOpacity>
         }
 
         <View style={styles.tittleRegister}>

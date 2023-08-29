@@ -1,15 +1,14 @@
-/* eslint-disable react/jsx-indent-props */
-/* eslint-disable react/jsx-closing-tag-location */
+/* eslint-disable react/jsx-indent */
 import { useState } from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
 import { useForm } from 'react-hook-form'
-import { Entypo } from '@expo/vector-icons'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { styles } from './LoginScreen.styles'
 import { LoaderBtn } from '../../components/LoaderBtn'
 import { loginSchema } from '../../utils/validations'
 import { InputControlled } from '../../components/InputdControlled'
 import { useLogin } from './hooks/useLogin'
+import { EyeIcon, EyeSlashIcon, IconContainer } from '../../icons'
 
 export const LoginScreen = ({ onSwitchToRegister }) => {
   const [isPasswordVisible, setPasswordVisible] = useState(false)
@@ -21,12 +20,15 @@ export const LoginScreen = ({ onSwitchToRegister }) => {
       password: ''
     }
   })
+
   const togglePasswordVisibility = () => {
     setPasswordVisible(!isPasswordVisible)
   }
+
   const handleLogin = ({ email, password }) => {
     userLogin({ email, password })
   }
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Inicia sesión</Text>
@@ -49,8 +51,8 @@ export const LoginScreen = ({ onSwitchToRegister }) => {
         >
           <Text style={styles.passwordToggleText}>
             {isPasswordVisible
-              ? <Entypo name='eye-with-line' size={24} color='black' />
-              : <Entypo name='eye' size={24} color='black' />}
+              ? <IconContainer size={24}><EyeSlashIcon /></IconContainer>
+              : <IconContainer size={24}><EyeIcon /></IconContainer>}
           </Text>
         </TouchableOpacity>
       </InputControlled>
@@ -59,13 +61,12 @@ export const LoginScreen = ({ onSwitchToRegister }) => {
         isLoading
           ? <LoaderBtn />
           : <TouchableOpacity
-            style={styles.button}
-            disabled={isLoading}
-            onPress={handleSubmit(handleLogin)}
-          // eslint-disable-next-line react/jsx-closing-bracket-location
-          >
+              style={styles.button}
+              disabled={isLoading}
+              onPress={handleSubmit(handleLogin)}
+            >
             <Text style={styles.buttonText}>Iniciar Sesión</Text>
-          </TouchableOpacity>
+            </TouchableOpacity>
       }
       <View style={styles.tittleRegister}>
         <Text>

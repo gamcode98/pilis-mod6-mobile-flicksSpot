@@ -1,6 +1,7 @@
 import Svg from 'react-native-svg'
+import { COLORS } from '../utils/theme'
 
-export const IconContainer = ({ size = 32, color = '#000', children, ...restOfProps }) => (
+export const IconContainer = ({ size = 32, color = COLORS.black, children, ...restOfProps }) => (
   <Svg
     xmlns='http://www.w3.org/2000/svg'
     fill='none'
