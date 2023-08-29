@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1,
     padding: 32,
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.white,
     marginTop: StatusBar.currentHeight
   },
   title: {
@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
     marginBottom: 12
   },
   input: {
-    borderColor: '#ccc',
+    borderColor: COLORS['grashy-grey'],
     borderWidth: 1,
     borderRadius: 16,
     paddingHorizontal: 12,
@@ -44,7 +44,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center'
   },
   buttonText: {
-    color: '#fff',
+    color: COLORS.black,
     fontSize: 18,
     fontWeight: 'bold'
   },
@@ -61,7 +61,7 @@ export const styles = StyleSheet.create({
   },
   toggleIcon: {
     position: 'absolute',
-    top: 10,
-    left: 260
+    right: 16,
+    top: 10
   }
 })

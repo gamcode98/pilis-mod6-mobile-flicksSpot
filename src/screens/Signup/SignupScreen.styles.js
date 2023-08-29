@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
     textAlign: 'center'
   },
   input: {
-    borderColor: '#ccc',
+    borderColor: COLORS['grashy-grey'],
     borderWidth: 1,
     borderRadius: 16,
     paddingHorizontal: 12,
@@ -48,7 +48,7 @@ export const styles = StyleSheet.create({
   buttonText: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: 'white'
+    color: COLORS.black
   },
   tittleRegister: {
     flexDirection: 'row',
@@ -67,7 +67,7 @@ export const styles = StyleSheet.create({
   },
   toggleIcon: {
     position: 'absolute',
-    top: 10,
-    left: 260
+    right: 16,
+    top: 10
   }
 })
