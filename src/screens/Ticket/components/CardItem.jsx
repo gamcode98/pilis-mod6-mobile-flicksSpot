@@ -1,10 +1,8 @@
 import { Animated, Image, Text, TouchableOpacity, View, Alert, Modal, Pressable, StyleSheet } from 'react-native'
-import { formatDate, formatTime, carouselConfig } from '../utils'
-import { IconContainer } from '../../../icons/IconContainer'
-import { QrCodeIcon } from '../../../icons/QrCodeIcon'
-import { TicketIcon } from '../../../icons/TicketIcon'
-import { DoorIcon } from '../../../icons/DoorIcon'
 import { useState } from 'react'
+import { carouselConfig } from '../utils'
+import { formatLongDate, formatTime } from '../../../utils'
+import { IconContainer, QrCodeIcon, TicketIcon, DoorIcon } from '../../../icons'
 
 export const CardItem = (props) => {
   const [modalVisible, setModalVisible] = useState(false)
@@ -62,7 +60,7 @@ export const CardItem = (props) => {
           borderBottomWidth: 1,
           paddingBottom: 8
         }}
-        >{formatDate(item.cinemaShow.date)} a las {formatTime(item.cinemaShow.hour, item.cinemaShow.minutes)}
+        >{formatLongDate(item.cinemaShow.date)} a las {formatTime(item.cinemaShow.hour, item.cinemaShow.minutes)}
         </Text>
         <View style={{
           flexDirection: 'row',

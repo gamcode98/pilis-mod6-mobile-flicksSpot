@@ -1,6 +1,6 @@
 import Svg from 'react-native-svg'
 
-export const IconContainer = ({ size = 32, children, ...restOfProps }) => (
+export const IconContainer = ({ size = 32, color = '#000', children, ...restOfProps }) => (
   <Svg
     xmlns='http://www.w3.org/2000/svg'
     fill='none'
@@ -10,6 +10,7 @@ export const IconContainer = ({ size = 32, children, ...restOfProps }) => (
     className='w-6 h-6'
     width={size}
     height={size}
+    color={color}
     {...restOfProps}
   >
     {children}

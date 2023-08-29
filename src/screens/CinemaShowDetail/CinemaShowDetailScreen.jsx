@@ -94,7 +94,7 @@ export const CinemaShowDetailScreen = (props) => {
 
   const addToCart = async () => {
     const { price } = selectedCinemaShow.availableSchedules[0]
-    const { totalPayment, schedule, availableSchedules } = selectedCinemaShow
+    const { totalPayment, schedule, availableSchedules, date, hall } = selectedCinemaShow
 
     const cinemaShow = availableSchedules.find(cinemaShow => {
       return cinemaShow.hour === schedule.hour && cinemaShow.minutes === schedule.minutes
@@ -104,12 +104,18 @@ export const CinemaShowDetailScreen = (props) => {
       ToastAndroid.show('Debes ingresar la cantidad de boletos que deseas', ToastAndroid.SHORT)
       return
     }
+
     const item = {
       cinemaShowId: cinemaShow.id,
-      title,
+      capacityAvailable: cinemaShow.capacityAvailable,
       image: image.url,
       unitPrice: price,
-      quantity: totalPayment / price
+      quantity: totalPayment / price,
+      hall: hall.name,
+      hour: schedule.hour,
+      minutes: schedule.minutes,
+      title,
+      date
     }
     const cart = await getItem(SECURE_STORE_KEYS.CART)
 
