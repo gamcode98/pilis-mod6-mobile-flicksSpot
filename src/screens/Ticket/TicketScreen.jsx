@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-indent */
 import { View, Animated, Platform } from 'react-native'
 import { useEffect, useRef, useState } from 'react'
 import { getTickets } from './services/tickets'
@@ -19,31 +20,17 @@ export const TicketScreen = () => {
   const scrollX = useRef(new Animated.Value(0)).current
 
   useEffect(() => {
-    // const fetchData = async () => {
-    //   const tickets = await getTickets()
-    //   console.log({ tickets })
-    //   setTickets([{ id: 'empty-left' }, ...tickets, { id: 'empty-right' }])
-    // }
-
-    // if (tickets.length === 0) {
-    //   fetchData(tickets)
-    // }
     setError(null)
     setIsLoading(true)
     getTickets()
       .then(data => {
-        console.log(data.length)
         if (data.length !== 0) {
-          setTickets([{ id: 'empty-left' }, ...data, { id: 'empty-right' }])
+          setTickets([{ movieId: 'empty-left' }, ...data, { movieId: 'empty-right' }])
         } else {
           setTickets([])
         }
-        // setTickets([{ id: 'empty-left' }, ...data, { id: 'empty-right' }])
       })
-      .catch(err => {
-        console.log(err)
-        setError(err)
-      })
+      .catch(err => setError(err))
       .finally(() => setIsLoading(false))
   }, [currentUser])
 
@@ -71,7 +58,7 @@ export const TicketScreen = () => {
             <Animated.FlatList
               showsHorizontalScrollIndicator={false}
               data={tickets}
-              keyExtractor={(item) => item.id}
+              keyExtractor={(item) => item.movieId.toString()}
               horizontal
               bounces={false}
               decelerationRate={Platform.OS === 'ios' ? 0 : 0.98}
@@ -85,7 +72,7 @@ export const TicketScreen = () => {
               )}
               scrollEventThrottle={16}
               renderItem={({ item, index }) => {
-                if (!item.cinemaShow) {
+                if (!item.details) {
                   return <View style={{ width: EMPTY_ITEM_SIZE }} />
                 }
 

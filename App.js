@@ -7,7 +7,7 @@ import { SECURE_STORE_KEYS, getItem } from './src/utils'
 import { UserProvider } from './src/contexts/UserContext'
 const Stack = createNativeStackNavigator()
 
-export default function App() {
+export default function App () {
   const [showOnboarding, setShowOnboarding] = useState(null)
 
   useEffect(() => {

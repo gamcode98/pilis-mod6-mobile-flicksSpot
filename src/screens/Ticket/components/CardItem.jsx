@@ -2,13 +2,24 @@ import { Animated, Image, Text, TouchableOpacity, View, Alert, Modal, Pressable,
 import { useState } from 'react'
 import { carouselConfig } from '../utils'
 import { formatLongDate, formatTime } from '../../../utils'
-import { IconContainer, QrCodeIcon, TicketIcon, DoorIcon } from '../../../icons'
+import { IconContainer, QrCodeIcon, TicketIcon, DoorIcon, ArrowsRightLeftIcon } from '../../../icons'
 
 export const CardItem = (props) => {
+  const { translateY, item } = props
+
   const [modalVisible, setModalVisible] = useState(false)
+  const [selectedItem, setSelectedItem] = useState(item.details[0])
   const { ITEM_SIZE, SPACING } = carouselConfig
 
-  const { translateY, item } = props
+  const handleSelectItem = () => {
+    setSelectedItem(prevState => {
+      const indexFound = item.details.indexOf(prevState)
+
+      if (item.details[indexFound + 1] === undefined) return item.details[0]
+
+      return item.details[indexFound + 1]
+    })
+  }
 
   return (
     <View style={{ width: ITEM_SIZE }}>
@@ -23,7 +34,7 @@ export const CardItem = (props) => {
         }}
       >
         <Image
-          source={{ uri: item.cinemaShow.movie.image.url }}
+          source={{ uri: item.imageUrl }}
           style={{
             width: '100%',
             height: ITEM_SIZE * 1.2,
@@ -41,7 +52,7 @@ export const CardItem = (props) => {
         marginRight: 'auto',
         width: '90%',
         backgroundColor: 'white',
-        paddingVertical: 16,
+        paddingTop: 16,
         paddingHorizontal: 8,
         borderRadius: 8
       }}
@@ -52,7 +63,7 @@ export const CardItem = (props) => {
           marginBottom: 8,
           textAlign: 'center'
         }}
-        >{item.cinemaShow.movie.title}
+        >{item.title}
         </Text>
         <Text style={{
           marginBottom: 8,
@@ -60,7 +71,7 @@ export const CardItem = (props) => {
           borderBottomWidth: 1,
           paddingBottom: 8
         }}
-        >{formatLongDate(item.cinemaShow.date)} a las {formatTime(item.cinemaShow.hour, item.cinemaShow.minutes)}
+        >{formatLongDate(selectedItem.cinemaShow.date)} a las {formatTime(selectedItem.cinemaShow.hour, selectedItem.cinemaShow.minutes)}
         </Text>
         <View style={{
           flexDirection: 'row',
@@ -80,17 +91,36 @@ export const CardItem = (props) => {
               <IconContainer color='#000' size={22}>
                 <TicketIcon />
               </IconContainer>
-              <Text>{item.quantity}</Text>
+              <Text>{selectedItem.quantity}</Text>
             </View>
             <View style={{ height: '100%', width: 1, backgroundColor: '#eee' }} />
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <IconContainer color='#000' size={22}>
                 <DoorIcon />
               </IconContainer>
-              <Text>{item.cinemaShow.room.name}</Text>
+              <Text>{selectedItem.cinemaShow.room.name}</Text>
             </View>
           </View>
         </View>
+        {item.details.length > 1 &&
+          <TouchableOpacity
+            style={{
+              borderRadius: 8,
+              paddingHorizontal: 16,
+              paddingVertical: 8,
+              borderWidth: 1,
+              borderColor: '#eee',
+              marginBottom: 16
+            }}
+            onPress={handleSelectItem}
+          >
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+              <IconContainer size={24}>
+                <ArrowsRightLeftIcon />
+              </IconContainer>
+              <Text style={{ color: '#000', fontWeight: '800' }}>Cambiar función</Text>
+            </View>
+          </TouchableOpacity>}
         <TouchableOpacity
           style={{
             backgroundColor: '#f5c518',
@@ -102,7 +132,7 @@ export const CardItem = (props) => {
           onPress={() => setModalVisible(true)}
         >
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-            <IconContainer color='#000'>
+            <IconContainer>
               <QrCodeIcon />
             </IconContainer>
             <Text style={{ color: '#000', fontWeight: '800' }}>Mostrar código QR</Text>
@@ -121,7 +151,7 @@ export const CardItem = (props) => {
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
                 <Image
-                  source={{ uri: item.qrCode }}
+                  source={{ uri: selectedItem.qrCode }}
                   style={{
                     width: 200,
                     height: 200,

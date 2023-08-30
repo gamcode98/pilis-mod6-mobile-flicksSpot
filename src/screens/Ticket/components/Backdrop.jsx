@@ -10,11 +10,11 @@ export const Backdrop = ({ tickets, scrollX }) => {
     <View style={styles.backdropContainer}>
       <FlatList
         data={tickets.reverse()}
-        keyExtractor={(item) => item.id.toString() + '-backdrop'}
+        keyExtractor={(item) => item.movieId.toString() + '-backdrop'}
         removeClippedSubviews={false}
         contentContainerStyle={{ width, height: BACKDROP_HEIGHT }}
         renderItem={({ item, index }) => {
-          if (!item.cinemaShow) {
+          if (!item.details) {
             return null
           }
           const translateX = scrollX.interpolate({
@@ -32,7 +32,7 @@ export const Backdrop = ({ tickets, scrollX }) => {
               }}
             >
               <Image
-                source={{ uri: item.cinemaShow.movie.image.url }}
+                source={{ uri: item.imageUrl }}
                 style={{
                   width,
                   height: BACKDROP_HEIGHT,

@@ -1,4 +1,5 @@
 export * from './AdjustmentsIcon'
+export * from './ArrowsRightLeftIcon'
 export * from './CartIcon'
 export * from './DoorIcon'
 export * from './EyeIcon'
