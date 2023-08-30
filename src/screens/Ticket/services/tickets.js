@@ -1,11 +1,14 @@
-import { BACKEND_URL } from '../../../utils/constants'
+import { BACKEND_URL, SECURE_STORE_KEYS, getItem } from '../../../utils'
 
 export const getTickets = async () => {
   const url = `${BACKEND_URL}/tickets`
+  const token = await getItem(SECURE_STORE_KEYS.TOKEN)
+
+  if (token === null) throw new Error('No token stored')
 
   return fetch(url, {
     headers: {
-      Authorization: 'Bearer ' + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsInJvbCI6ImN1c3RvbWVyIiwiaWF0IjoxNjkzMTQzMjgwLCJleHAiOjE2OTMxNTA0ODB9.YAw3Fhc9SjsVXa53OrGYzMk42AmUlWcgfTa9FsgWyog'
+      Authorization: 'Bearer ' + token
     }
   })
     .then(response => response.json())

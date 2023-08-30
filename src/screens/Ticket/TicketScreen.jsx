@@ -5,26 +5,50 @@ import { Loader } from '../../components/Loader'
 import { Backdrop, CardItem } from './components'
 import { carouselConfig } from './utils'
 import { styles } from './TicketScreen.styles'
+import { NoContent, NoLogged } from '../../components'
 
 const { ITEM_SIZE, EMPTY_ITEM_SIZE } = carouselConfig
 
 export const TicketScreen = () => {
   const [tickets, setTickets] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState(null)
+
   const scrollX = useRef(new Animated.Value(0)).current
 
   useEffect(() => {
-    const fetchData = async () => {
-      const tickets = await getTickets()
-      setTickets([{ id: 'empty-left' }, ...tickets, { id: 'empty-right' }])
-    }
+    // const fetchData = async () => {
+    //   const tickets = await getTickets()
+    //   console.log({ tickets })
+    //   setTickets([{ id: 'empty-left' }, ...tickets, { id: 'empty-right' }])
+    // }
 
-    if (tickets.length === 0) {
-      fetchData(tickets)
-    }
-  }, [tickets])
+    // if (tickets.length === 0) {
+    //   fetchData(tickets)
+    // }
+    setIsLoading(true)
+    getTickets()
+      .then(data => {
+        console.log(data)
+        if (data.length !== 0) {
+          setTickets([{ id: 'empty-left' }, ...data, { id: 'empty-right' }])
+        }
+        // setTickets([{ id: 'empty-left' }, ...data, { id: 'empty-right' }])
+      })
+      .catch(err => setError(err))
+      .finally(() => setIsLoading(false))
+  }, [])
+
+  if (error) {
+    return <NoLogged />
+  }
+
+  if (isLoading) {
+    return <Loader />
+  }
 
   if (tickets.length === 0) {
-    return <Loader />
+    return <NoContent />
   }
 
   return (

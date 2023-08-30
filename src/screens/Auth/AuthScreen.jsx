@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { View } from 'react-native'
 import { styles } from './AuthScreen.styles'
-import { LoginScreen, SignupScreen } from '../.'
+import { LoginScreen } from '../Login/LoginScreen'
+import { SignupScreen } from '../Signup/SignupScreen'
 
 export const AuthScreen = () => {
   const [showLogin, setShowLogin] = useState(true)

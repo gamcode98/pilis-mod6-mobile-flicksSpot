@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { FlatList, Image, Text, TouchableOpacity, View, ToastAndroid } from 'react-native'
 import { SECURE_STORE_KEYS, formatLongDate, formatTime, getItem, removeItem, saveItem } from '../../utils'
 import { IconContainer, MinusIcon, PlusIcon, TrashIcon } from '../../icons'
+import { EmptyCart } from '../../components'
 
 export const CartScreen = (props) => {
   const { route } = props
@@ -172,7 +173,7 @@ export const CartScreen = (props) => {
               </View>
 
             </View>
-            : <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><Text>Cart empty</Text></View>
+            : <EmptyCart />
         }
       </>
   )

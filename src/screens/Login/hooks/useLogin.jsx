@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { ToastAndroid } from 'react-native'
 import { login } from '../services/login'
 import useCurrentUser from '../../../hooks/useCurrentUser'
-import { saveItem } from '../../../utils'
+import { SECURE_STORE_KEYS, saveItem } from '../../../utils'
 
 export function useLogin () {
   const [isLoading, setIsLoading] = useState(false)
@@ -17,7 +17,7 @@ export function useLogin () {
           return
         }
         const { username, email } = data.user
-        saveItem('token', data.token)
+        saveItem(SECURE_STORE_KEYS.TOKEN, data.token)
         setCurrentUser({ email, username })
       })
       .catch(err => console.warn(err))
