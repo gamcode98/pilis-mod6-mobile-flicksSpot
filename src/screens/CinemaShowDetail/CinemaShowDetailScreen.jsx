@@ -2,7 +2,7 @@
 import { FlatList, Image, ScrollView, Text, TextInput, TouchableOpacity, View, ToastAndroid } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { useState } from 'react'
-import { CartIcon, IconContainer } from '../../icons'
+import { ArrowLeftIcon, CartIcon, IconContainer } from '../../icons'
 import { ScheduleItem, DateItem } from './components'
 import { formatHalls } from './utils/formatHalls'
 import { styles } from './CinemaShowDetailScreen.styles'
@@ -80,6 +80,10 @@ export const CinemaShowDetailScreen = (props) => {
         totalPayment: 0
       }
     })
+  }
+
+  const goBackScreen = () => {
+    navigation.goBack()
   }
 
   const handleTotalPayment = (value) => {
@@ -177,6 +181,20 @@ export const CinemaShowDetailScreen = (props) => {
           <Text style={styles.movieName}>{title}</Text>
           <Text style={styles.moviePlot}>{description}</Text>
         </View>
+
+        <TouchableOpacity
+          style={{
+            position: 'absolute',
+            zIndex: 1,
+            top: 30,
+            left: 20
+          }}
+          onPress={goBackScreen}
+        >
+          <IconContainer color='#fff' size={40}>
+            <ArrowLeftIcon />
+          </IconContainer>
+        </TouchableOpacity>
       </View>
 
       <View style={styles.container}>

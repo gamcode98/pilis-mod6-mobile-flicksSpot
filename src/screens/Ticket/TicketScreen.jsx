@@ -5,26 +5,44 @@ import { Loader } from '../../components/Loader'
 import { Backdrop, CardItem } from './components'
 import { carouselConfig } from './utils'
 import { styles } from './TicketScreen.styles'
+import { NoContent, NoLogged } from '../../components'
+import useCurrentUser from '../../hooks/useCurrentUser'
 
 const { ITEM_SIZE, EMPTY_ITEM_SIZE } = carouselConfig
 
 export const TicketScreen = () => {
+  const { currentUser, reloadUserData } = useCurrentUser()
   const [tickets, setTickets] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState()
+
   const scrollX = useRef(new Animated.Value(0)).current
 
   useEffect(() => {
-    const fetchData = async () => {
-      const tickets = await getTickets()
-      setTickets([{ id: 'empty-left' }, ...tickets, { id: 'empty-right' }])
-    }
+    setError(null)
+    setIsLoading(true)
+    getTickets()
+      .then(data => {
+        if (data.length !== 0) {
+          setTickets([{ movieId: 'empty-left' }, ...data, { movieId: 'empty-right' }])
+        } else {
+          setTickets([])
+        }
+      })
+      .catch(err => setError(err))
+      .finally(() => setIsLoading(false))
+  }, [currentUser, reloadUserData])
 
-    if (tickets.length === 0) {
-      fetchData(tickets)
-    }
-  }, [tickets])
+  if (error) {
+    return <NoLogged />
+  }
+
+  if (isLoading) {
+    return <Loader />
+  }
 
   if (tickets.length === 0) {
-    return <Loader />
+    return <NoContent />
   }
 
   return (
@@ -33,7 +51,7 @@ export const TicketScreen = () => {
       <Animated.FlatList
         showsHorizontalScrollIndicator={false}
         data={tickets}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.movieId.toString()}
         horizontal
         bounces={false}
         decelerationRate={Platform.OS === 'ios' ? 0 : 0.98}
@@ -47,7 +65,7 @@ export const TicketScreen = () => {
         )}
         scrollEventThrottle={16}
         renderItem={({ item, index }) => {
-          if (!item.cinemaShow) {
+          if (!item.details) {
             return <View style={{ width: EMPTY_ITEM_SIZE }} />
           }
 

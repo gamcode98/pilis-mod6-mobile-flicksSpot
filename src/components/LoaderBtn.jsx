@@ -2,7 +2,7 @@ import { StyleSheet, View } from 'react-native'
 import LottieView from 'lottie-react-native'
 import { COLORS } from '../utils/theme'
 
-export function LoaderBtn() {
+export function LoaderBtn () {
   return (
     <View style={styles.animationContainer}>
       <LottieView

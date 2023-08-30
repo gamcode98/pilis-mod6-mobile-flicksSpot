@@ -3,11 +3,15 @@ import { useEffect, useState } from 'react'
 import { FlatList, Image, Text, TouchableOpacity, View, ToastAndroid } from 'react-native'
 import { SECURE_STORE_KEYS, formatLongDate, formatTime, getItem, removeItem, saveItem } from '../../utils'
 import { IconContainer, MinusIcon, PlusIcon, TrashIcon } from '../../icons'
+import { EmptyCart, Loader } from '../../components'
+import useCurrentUser from '../../hooks/useCurrentUser'
+import { payment } from './services/payment'
 
 export const CartScreen = (props) => {
   const { route } = props
   const [cart, setCart] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
+  const { currentUser, setReloadUserData } = useCurrentUser()
 
   useEffect(() => {
     getItem(SECURE_STORE_KEYS.CART)
@@ -56,124 +60,157 @@ export const CartScreen = (props) => {
     setCart(cartParsed)
   }
 
+  const handlePayment = () => {
+    if (currentUser === null) {
+      ToastAndroid.show('Debes iniciar sesión para poder realizar tu pago', ToastAndroid.SHORT)
+      return
+    }
+
+    const items = cart.map(cartItem => {
+      const { cinemaShowId, title, unitPrice, quantity } = cartItem
+      return {
+        cinemaShowId,
+        title,
+        unitPrice,
+        quantity
+      }
+    })
+
+    payment(items)
+      .then(data => {
+        console.log({ data })
+        setReloadUserData(prevState => !prevState)
+        ToastAndroid.show('Pago realizado con éxito', ToastAndroid.SHORT)
+      })
+      .catch((error) => {
+        console.log('error -> ', error)
+        ToastAndroid.show('Ups, algo salió mal', ToastAndroid.SHORT)
+      })
+      .finally(() => {
+        removeItem(SECURE_STORE_KEYS.CART)
+        setCart(null)
+      })
+  }
+
+  if (isLoading) {
+    return <Loader />
+  }
+
   return (
-    isLoading
-      ? <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}><Text>Loading...</Text></View>
-      : <>
-        {
-          cart && cart.length > 0
-            ? <View style={{ flex: 1, marginTop: 40, alignItems: 'center' }}>
-
-              <View style={{ width: '94%' }}>
-                <FlatList
-                  data={cart}
-                  keyExtractor={item => item.cinemaShowId}
-                  renderItem={({ item }) => {
-                    return (
-                      <View style={{
-                        marginBottom: 16,
-                        borderBottomWidth: 1,
-                        borderColor: '#ccc',
-                        paddingBottom: 8,
-                        flexDirection: 'row',
-                        gap: 16,
-                        position: 'relative'
-                      }}
-                      >
-                        <Image
-                          source={{ uri: item.image }}
-                          style={{ width: 100, height: 100 }}
-                        />
-                        <View>
-                          <Text style={{ fontWeight: 'bold' }}>{item.title}</Text>
-                          <Text style={{
-                            fontSize: 12,
-                            color: '#aaa',
-                            marginBottom: 8
-                          }}
-                          >{formatLongDate(item.date)} a las {formatTime(item.hour, item.minutes)} - {item.hall}</Text>
-                          <Text style={{ fontSize: 14, color: '#000', opacity: 0.7, marginBottom: 16 }}>Subtotal: ${item.unitPrice * item.quantity}</Text>
-
-                          <View style={{ flexDirection: 'row', gap: 16, alignItems: 'center' }}>
-                            <TouchableOpacity
-                              style={{ padding: 6, borderRadius: 100, borderWidth: 1, borderColor: '#ccc' }}
-                              onPress={() => handleTicketsInCart(item.cinemaShowId, 'decrement')}
-                            >
-                              <IconContainer size={20}>
-                                <MinusIcon />
-                              </IconContainer>
-                            </TouchableOpacity>
-                            <Text>{item.quantity}</Text>
-                            <TouchableOpacity
-                              style={{ padding: 6, borderRadius: 100, borderWidth: 1, borderColor: '#ccc' }}
-                              onPress={() => handleTicketsInCart(item.cinemaShowId, 'increment')}
-                            >
-                              <IconContainer size={20}>
-                                <PlusIcon />
-                              </IconContainer>
-                            </TouchableOpacity>
-                          </View>
-                        </View>
-                        <TouchableOpacity
-                          style={{
-                            position: 'absolute',
-                            bottom: 10,
-                            right: 0,
-                            padding: 6,
-                            borderRadius: 100,
-                            borderWidth: 1,
-                            borderColor: '#ccc'
-                          }}
-                          onPress={() => handleRemoveItem(item.cinemaShowId)}
-                        >
-                          <IconContainer size={20}>
-                            <TrashIcon />
-                          </IconContainer>
-                        </TouchableOpacity>
-                      </View>
-                    )
-                  }}
-                  ListHeaderComponent={() => {
-                    return (
-                      <View style={{
-                        width: '94%'
-                      }}
-                      >
+    <>
+      {
+        cart === null || cart.length === 0
+          ? <EmptyCart />
+          : <View style={{ flex: 1, marginTop: 40, alignItems: 'center' }}>
+            <View style={{ width: '94%' }}>
+              <FlatList
+                data={cart}
+                keyExtractor={item => item.cinemaShowId}
+                renderItem={({ item }) => {
+                  return (
+                    <View style={{
+                      marginBottom: 16,
+                      borderBottomWidth: 1,
+                      borderColor: '#ccc',
+                      paddingBottom: 8,
+                      flexDirection: 'row',
+                      gap: 16,
+                      position: 'relative'
+                    }}
+                    >
+                      <Image
+                        source={{ uri: item.image }}
+                        style={{ width: 100, height: 100 }}
+                      />
+                      <View>
+                        <Text style={{ fontWeight: 'bold' }}>{item.title}</Text>
                         <Text style={{
-                          fontWeight: 'bold',
-                          fontSize: 32,
-                          textAlign: 'center',
-                          marginBottom: 30
+                          fontSize: 12,
+                          color: '#aaa',
+                          marginBottom: 8
                         }}
-                        >Mi carrito</Text>
-                      </View>
-                    )
-                  }}
-                  showsVerticalScrollIndicator={false}
-                  ListFooterComponent={() => {
-                    return (
-                      <View style={{ marginBottom: 16 }}>
-                        <Text style={{ textAlign: 'right', width: '94%' }}>Total: ${cart.reduce((acc, item) => acc + item.unitPrice * item.quantity, 0)}</Text>
-                        <TouchableOpacity
-                          style={{
-                            padding: 16,
-                            borderRadius: 4,
-                            marginTop: 16,
-                            backgroundColor: '#F9B208'
-                          }}
-                          onPress={async () => await removeItem(SECURE_STORE_KEYS.CART)}
-                        >
-                          <Text style={{ fontWeight: 'bold' }}>Pagar</Text>
-                        </TouchableOpacity>
-                      </View>
-                    )
-                  }}
-                />
-              </View>
+                        >{formatLongDate(item.date)} a las {formatTime(item.hour, item.minutes)} - {item.hall}</Text>
+                        <Text style={{ fontSize: 14, color: '#000', opacity: 0.7, marginBottom: 16 }}>Subtotal: ${item.unitPrice * item.quantity}</Text>
 
+                        <View style={{ flexDirection: 'row', gap: 16, alignItems: 'center' }}>
+                          <TouchableOpacity
+                            style={{ padding: 6, borderRadius: 100, borderWidth: 1, borderColor: '#ccc' }}
+                            onPress={() => handleTicketsInCart(item.cinemaShowId, 'decrement')}
+                          >
+                            <IconContainer size={20}>
+                              <MinusIcon />
+                            </IconContainer>
+                          </TouchableOpacity>
+                          <Text>{item.quantity}</Text>
+                          <TouchableOpacity
+                            style={{ padding: 6, borderRadius: 100, borderWidth: 1, borderColor: '#ccc' }}
+                            onPress={() => handleTicketsInCart(item.cinemaShowId, 'increment')}
+                          >
+                            <IconContainer size={20}>
+                              <PlusIcon />
+                            </IconContainer>
+                          </TouchableOpacity>
+                        </View>
+                      </View>
+                      <TouchableOpacity
+                        style={{
+                          position: 'absolute',
+                          bottom: 10,
+                          right: 0,
+                          padding: 6,
+                          borderRadius: 100,
+                          borderWidth: 1,
+                          borderColor: '#ccc'
+                        }}
+                        onPress={() => handleRemoveItem(item.cinemaShowId)}
+                      >
+                        <IconContainer size={20}>
+                          <TrashIcon />
+                        </IconContainer>
+                      </TouchableOpacity>
+                    </View>
+                  )
+                }}
+                ListHeaderComponent={() => {
+                  return (
+                    <View style={{
+                      width: '94%'
+                    }}
+                    >
+                      <Text style={{
+                        fontWeight: 'bold',
+                        fontSize: 32,
+                        textAlign: 'center',
+                        marginBottom: 30
+                      }}
+                      >Mi carrito</Text>
+                    </View>
+                  )
+                }}
+                showsVerticalScrollIndicator={false}
+                ListFooterComponent={() => {
+                  return (
+                    <View style={{ marginBottom: 16 }}>
+                      <Text style={{ textAlign: 'right', width: '94%' }}>Total: ${cart.reduce((acc, item) => acc + item.unitPrice * item.quantity, 0)}</Text>
+                      <TouchableOpacity
+                        style={{
+                          padding: 16,
+                          borderRadius: 4,
+                          marginTop: 16,
+                          backgroundColor: '#F9B208'
+                        }}
+                        onPress={handlePayment}
+                      >
+                        <Text style={{ fontWeight: 'bold' }}>Pagar</Text>
+                      </TouchableOpacity>
+                    </View>
+                  )
+                }}
+              />
             </View>
-            : <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><Text>Cart empty</Text></View>
-        }
-      </>
+          </View>
+      }
+    </>
+
   )
 }

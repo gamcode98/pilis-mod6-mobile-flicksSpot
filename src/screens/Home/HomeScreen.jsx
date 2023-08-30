@@ -7,10 +7,12 @@ import { styles } from './HomeScreen.styles'
 import { configCarousel } from './utils/configCarousel'
 import { AdjustmentsIcon, IconContainer, XCircleIcon } from '../../icons'
 import { useMovies } from './hooks/useMovies'
+import useCurrentUser from '../../hooks/useCurrentUser'
 
 const { FULL_SIZE } = configCarousel
 
 export const HomeScreen = ({ navigation }) => {
+  const { currentUser } = useCurrentUser()
   const scrollX = useRef(new Animated.Value(0)).current
   const [modalVisible, setModalVisible] = useState(false)
 
@@ -25,10 +27,10 @@ export const HomeScreen = ({ navigation }) => {
             <View style={styles.topSection}>
               <View>
                 <View style={styles.greetingContainer}>
-                  <Text style={styles.greeting}>Hola </Text>
-                  <Text style={styles.customerName}>Gabriel</Text>
+                  <Text style={styles.greeting}>{currentUser === null ? 'Compra tus tickets ahora' : 'Hola'} </Text>
+                  <Text style={styles.customerName}>{currentUser === null ? '' : currentUser.username}</Text>
                 </View>
-                <Text style={styles.subTitle}>Tu película, tu entrada</Text>
+                <Text style={styles.subTitle}>{currentUser === null ? '¡No te quedes afuera!' : 'Tu película, tu entrada'}</Text>
               </View>
               <Image
                 source={require('./assets/icons/popcorn.png')}

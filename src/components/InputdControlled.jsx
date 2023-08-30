@@ -4,7 +4,7 @@ import { styles } from './InputControlled.styles'
 import { Text, TextInput, View } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
 
-export function InputControlled(props) {
+export function InputControlled (props) {
   const { control, name, children, ...restOfProps } = props
   const {
     field,
