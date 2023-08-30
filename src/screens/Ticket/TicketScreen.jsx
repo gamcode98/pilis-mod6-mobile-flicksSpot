@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-indent */
 import { View, Animated, Platform } from 'react-native'
 import { useEffect, useRef, useState } from 'react'
 import { getTickets } from './services/tickets'
@@ -12,7 +11,7 @@ import useCurrentUser from '../../hooks/useCurrentUser'
 const { ITEM_SIZE, EMPTY_ITEM_SIZE } = carouselConfig
 
 export const TicketScreen = () => {
-  const { currentUser } = useCurrentUser()
+  const { currentUser, reloadUserData } = useCurrentUser()
   const [tickets, setTickets] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState()
@@ -32,72 +31,64 @@ export const TicketScreen = () => {
       })
       .catch(err => setError(err))
       .finally(() => setIsLoading(false))
-  }, [currentUser])
+  }, [currentUser, reloadUserData])
 
   if (error) {
     return <NoLogged />
   }
 
-  // if (isLoading) {
-  //   return <Loader />
-  // }
+  if (isLoading) {
+    return <Loader />
+  }
 
-  // if (tickets.length === 0) {
-  //   return <NoContent />
-  // }
+  if (tickets.length === 0) {
+    return <NoContent />
+  }
 
   return (
-    isLoading
-      ? <Loader />
-      : <>
-        {
-        tickets.length === 0
-          ? <NoContent />
-          : <View style={styles.container}>
-            <Backdrop tickets={tickets} scrollX={scrollX} />
-            <Animated.FlatList
-              showsHorizontalScrollIndicator={false}
-              data={tickets}
-              keyExtractor={(item) => item.movieId.toString()}
-              horizontal
-              bounces={false}
-              decelerationRate={Platform.OS === 'ios' ? 0 : 0.98}
-              renderToHardwareTextureAndroid
-              contentContainerStyle={styles.contentContainerStyle}
-              snapToInterval={ITEM_SIZE}
-              snapToAlignment='start'
-              onScroll={Animated.event(
-                [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-                { useNativeDriver: false }
-              )}
-              scrollEventThrottle={16}
-              renderItem={({ item, index }) => {
-                if (!item.details) {
-                  return <View style={{ width: EMPTY_ITEM_SIZE }} />
-                }
+    <View style={styles.container}>
+      <Backdrop tickets={tickets} scrollX={scrollX} />
+      <Animated.FlatList
+        showsHorizontalScrollIndicator={false}
+        data={tickets}
+        keyExtractor={(item) => item.movieId.toString()}
+        horizontal
+        bounces={false}
+        decelerationRate={Platform.OS === 'ios' ? 0 : 0.98}
+        renderToHardwareTextureAndroid
+        contentContainerStyle={styles.contentContainerStyle}
+        snapToInterval={ITEM_SIZE}
+        snapToAlignment='start'
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+          { useNativeDriver: false }
+        )}
+        scrollEventThrottle={16}
+        renderItem={({ item, index }) => {
+          if (!item.details) {
+            return <View style={{ width: EMPTY_ITEM_SIZE }} />
+          }
 
-                const inputRange = [
-                  (index - 2) * ITEM_SIZE,
-                  (index - 1) * ITEM_SIZE,
-                  index * ITEM_SIZE
-                ]
+          const inputRange = [
+            (index - 2) * ITEM_SIZE,
+            (index - 1) * ITEM_SIZE,
+            index * ITEM_SIZE
+          ]
 
-                const translateY = scrollX.interpolate({
-                  inputRange,
-                  outputRange: [100, 50, 100],
-                  extrapolate: 'clamp'
-                })
+          const translateY = scrollX.interpolate({
+            inputRange,
+            outputRange: [100, 50, 100],
+            extrapolate: 'clamp'
+          })
 
-                return (
-                  <CardItem
-                    item={item}
-                    translateY={translateY}
-                  />
-                )
-              }}
+          return (
+            <CardItem
+              item={item}
+              translateY={translateY}
             />
-            </View>
-      }
-        </>
+          )
+        }}
+      />
+    </View>
   )
 }

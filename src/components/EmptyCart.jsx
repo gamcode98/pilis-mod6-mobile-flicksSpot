@@ -26,12 +26,11 @@ export const EmptyCart = () => {
         fontWeight: 'bold',
         marginBottom: 16
       }}
-      >Sin Elementos en tu Carrito
+      >Sin elementos en tu carrito
       </Text>
       <Text style={{
         textAlign: 'center',
         fontSize: 16,
-        fontWeight: 'bold',
         marginBottom: 32
       }}
       >
