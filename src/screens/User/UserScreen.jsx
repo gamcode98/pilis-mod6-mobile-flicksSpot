@@ -7,7 +7,7 @@ import useCurrentUser from '../../hooks/useCurrentUser'
 export const UserInfoScreen = () => {
   const { currentUser, setCurrentUser } = useCurrentUser()
 
-  async function deleteToken(key) {
+  async function deleteToken (key) {
     await SecureStore.deleteItemAsync(key)
   }
 
