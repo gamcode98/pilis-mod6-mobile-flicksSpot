@@ -1,5 +1,7 @@
 import { TouchableOpacity, Text } from 'react-native'
-import { formatTime } from '../utils/formatTime'
+import { formatTime } from '../../utils/formatTime'
+import { styles } from './ScheduleItem.styles'
+import { COLORS } from '../../../../utils'
 
 export const ScheduleItem = (props) => {
   const { hour, minutes, selectedSchedule, handleSelectSchedule } = props
@@ -10,18 +12,12 @@ export const ScheduleItem = (props) => {
   return (
     <TouchableOpacity
       onPress={() => handleSelectSchedule(hour, minutes)}
-      style={{
-        paddingVertical: 8,
-        paddingHorizontal: 16,
-        borderWidth: 1,
-        borderRadius: 8,
-        borderColor: selectedTime === time ? '#F9B208' : '#000'
-      }}
+      style={[styles.scheduleBtn, {
+        borderColor: selectedTime === time ? COLORS.primary : COLORS.black
+      }]}
     >
       <Text
-        style={{
-          color: selectedTime === time ? '#F9B208' : '#000'
-        }}
+        style={{ color: selectedTime === time ? COLORS.primary : COLORS.black }}
       >{time}
       </Text>
     </TouchableOpacity>

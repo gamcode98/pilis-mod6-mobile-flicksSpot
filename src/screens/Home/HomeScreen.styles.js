@@ -1,12 +1,13 @@
 import { StyleSheet, StatusBar } from 'react-native'
 import { configCarousel } from './utils/configCarousel'
+import { COLORS } from '../../utils/theme'
 
 const { ITEM_WIDTH, SPACING_SCREEN, ITEM_HEIGHT } = configCarousel
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.white,
     paddingTop: StatusBar.currentHeight + 10
   },
   itemContainer: {
@@ -71,7 +72,7 @@ export const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
-    shadowColor: '#000',
+    shadowColor: COLORS.black,
     shadowOffset: {
       width: 0,
       height: 2
@@ -87,24 +88,49 @@ export const styles = StyleSheet.create({
     padding: 16,
     paddingTop: 32
   },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2
+  modalHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 32
   },
-  buttonOpen: {
-    backgroundColor: '#F194FF'
+  modalTitle: {
+    textAlign: 'center',
+    fontSize: 20,
+    fontWeight: '800'
   },
-  buttonClose: {
-    backgroundColor: '#2196F3'
+  resetText: {
+    color: COLORS.primary,
+    fontWeight: '600'
   },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
+  hallsContainer: { marginBottom: 16 },
+  hallTitle: { fontWeight: '800', marginBottom: 16 },
+  hallsBtns: {
+    flexDirection: 'row',
+    gap: 16,
+    flexWrap: 'wrap'
+  },
+  hallBtn: {
+    borderRadius: 8,
+    borderWidth: 1,
+    padding: 8,
     textAlign: 'center'
   },
-  modalText: {
-    marginBottom: 15,
+  languagesContainer: { marginBottom: 32 },
+  languageTitle: { fontWeight: '800', marginBottom: 16 },
+  languagesContent: { flexDirection: 'row', gap: 16 },
+  languageBtn: {
+    borderRadius: 8,
+    borderWidth: 1,
+    padding: 8,
     textAlign: 'center'
+  },
+  modalBtn: {
+    borderRadius: 8,
+    paddingVertical: 16,
+    textAlign: 'center',
+    backgroundColor: COLORS.primary,
+    color: COLORS.white,
+    fontWeight: '800'
   }
 })

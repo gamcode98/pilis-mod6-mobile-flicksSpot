@@ -1,19 +1,16 @@
 import { View, Text, Image, ScrollView, Pressable, ToastAndroid } from 'react-native'
 import { Feather, MaterialIcons } from '@expo/vector-icons'
-import * as SecureStore from 'expo-secure-store'
-import { styles } from './UserInfoScreen.styles'
 import useCurrentUser from '../../hooks/useCurrentUser'
+import { removeItem } from '../../utils/secureStorage'
+import { SECURE_STORE_KEYS } from '../../utils/constants'
+import { styles } from './UserInfoScreen.styles'
 
 export const UserInfoScreen = () => {
   const { currentUser, setCurrentUser } = useCurrentUser()
 
-  async function deleteToken (key) {
-    await SecureStore.deleteItemAsync(key)
-  }
-
   const handleLogout = async () => {
     setCurrentUser(null)
-    await deleteToken('token')
+    await removeItem(SECURE_STORE_KEYS.TOKEN)
   }
 
   const noAvailable = () => {

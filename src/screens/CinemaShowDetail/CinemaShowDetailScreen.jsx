@@ -1,12 +1,12 @@
 /* eslint-disable no-prototype-builtins */
 import { FlatList, Image, ScrollView, Text, TextInput, TouchableOpacity, View, ToastAndroid } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
-import { useState } from 'react'
 import { ArrowLeftIcon, CartIcon, IconContainer } from '../../icons'
 import { ScheduleItem, DateItem } from './components'
 import { formatHalls } from './utils/formatHalls'
 import { styles } from './CinemaShowDetailScreen.styles'
-import { SECURE_STORE_KEYS, getItem, saveItem } from '../../utils'
+import { COLORS, SECURE_STORE_KEYS, getItem, saveItem } from '../../utils'
+import { useCinemaShowDetail } from './hooks/useCinemaShowDetail'
 
 export const CinemaShowDetailScreen = (props) => {
   const { route, navigation } = props
@@ -19,81 +19,16 @@ export const CinemaShowDetailScreen = (props) => {
     return datesInHall[0]
   }
 
-  const [selectedCinemaShow, setSelectedCinemaShow] = useState({
-    hall: halls[0],
-    availableCinemaShows: cinemaShows[`${halls[0].id}-${halls[0].name}`],
-    date: defaultDate(),
-    availableSchedules: cinemaShows[`${halls[0].id}-${halls[0].name}`][defaultDate()],
-    schedule: {
-      hour: cinemaShows[`${halls[0].id}-${halls[0].name}`][defaultDate()][0].hour,
-      minutes: cinemaShows[`${halls[0].id}-${halls[0].name}`][defaultDate()][0].minutes
-    },
-    totalPayment: 0
-  })
-
-  const handleSelectHall = (hall) => {
-    setSelectedCinemaShow(() => {
-      const hallObject = cinemaShows[`${hall.id}-${hall.name}`]
-      const datesInHall = Object.keys(hallObject)
-      const schedulesInDate = hallObject[datesInHall[0]]
-      return {
-        hall,
-        availableCinemaShows: cinemaShows[`${hall.id}-${hall.name}`],
-        date: datesInHall[0],
-        availableSchedules: schedulesInDate,
-        schedule: {
-          hour: schedulesInDate[0].hour,
-          minutes: schedulesInDate[0].minutes
-        },
-        totalPayment: 0
-      }
-    })
-  }
-
-  const handleSelectDate = (date) => {
-    setSelectedCinemaShow(prevState => {
-      const hallObject = cinemaShows[`${prevState.hall.id}-${prevState.hall.name}`]
-      const schedulesInDate = hallObject[date]
-      return {
-        ...prevState,
-        date,
-        availableSchedules: schedulesInDate,
-        schedule: {
-          hour: schedulesInDate[0].hour,
-          minutes: schedulesInDate[0].minutes
-        },
-        totalPayment: 0
-      }
-    })
-  }
-
-  const handleSelectSchedule = (hour, minutes) => {
-    setSelectedCinemaShow(prevState => {
-      const schedulesInDate = prevState.availableSchedules
-      const foundSchedule = schedulesInDate.find(schedule => {
-        return schedule.hour === hour && schedule.minutes === minutes
-      })
-
-      return {
-        ...prevState,
-        schedule: foundSchedule,
-        totalPayment: 0
-      }
-    })
-  }
+  const {
+    handleSelectDate,
+    handleSelectHall,
+    handleSelectSchedule,
+    handleTotalPayment,
+    selectedCinemaShow
+  } = useCinemaShowDetail(halls, cinemaShows, defaultDate)
 
   const goBackScreen = () => {
     navigation.goBack()
-  }
-
-  const handleTotalPayment = (value) => {
-    const { price } = selectedCinemaShow.availableSchedules[0]
-    setSelectedCinemaShow(prevState => {
-      return {
-        ...prevState,
-        totalPayment: value * price
-      }
-    })
   }
 
   const addToCart = async () => {
@@ -191,7 +126,7 @@ export const CinemaShowDetailScreen = (props) => {
           }}
           onPress={goBackScreen}
         >
-          <IconContainer color='#fff' size={40}>
+          <IconContainer color={COLORS.white} size={40}>
             <ArrowLeftIcon />
           </IconContainer>
         </TouchableOpacity>
@@ -206,11 +141,11 @@ export const CinemaShowDetailScreen = (props) => {
               halls.map(hall => (
                 <TouchableOpacity
                   key={hall.id}
-                  style={[styles.hall, { borderColor: selectedCinemaShow.hall.id === hall.id ? '#F9B208' : '#000' }]}
+                  style={[styles.hall, { borderColor: selectedCinemaShow.hall.id === hall.id ? COLORS.primary : COLORS.black }]}
                   onPress={() => handleSelectHall(hall)}
                 >
                   <Text style={{
-                    color: selectedCinemaShow.hall.id === hall.id ? '#F9B208' : '#000'
+                    color: selectedCinemaShow.hall.id === hall.id ? COLORS.primary : COLORS.black
                   }}
                   >{hall.name}
                   </Text>
@@ -268,7 +203,7 @@ export const CinemaShowDetailScreen = (props) => {
             style={styles.btnAddToCart}
             onPress={addToCart}
           >
-            <IconContainer color='#000'>
+            <IconContainer>
               <CartIcon />
             </IconContainer>
             <Text style={styles.addToCartText}>Añadir al carrito</Text>

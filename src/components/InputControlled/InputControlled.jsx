@@ -6,6 +6,7 @@ import { MaterialIcons } from '@expo/vector-icons'
 
 export function InputControlled (props) {
   const { control, name, children, ...restOfProps } = props
+
   const {
     field,
     fieldState: { invalid, error }
