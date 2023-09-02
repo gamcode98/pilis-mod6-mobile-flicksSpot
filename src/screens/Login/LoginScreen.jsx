@@ -3,16 +3,16 @@ import { useState } from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { styles } from './LoginScreen.styles'
-import { LoaderBtn } from '../../components/LoaderBtn'
+import { LoaderBtn, InputControlled } from '../../components'
 import { loginSchema } from '../../utils/validations'
-import { InputControlled } from '../../components/InputdControlled'
-import { useLogin } from './hooks/useLogin'
 import { EyeIcon, EyeSlashIcon, IconContainer } from '../../icons'
+import { useLogin } from './hooks/useLogin'
+import { styles } from './LoginScreen.styles'
 
 export const LoginScreen = ({ onSwitchToRegister }) => {
   const [isPasswordVisible, setPasswordVisible] = useState(false)
   const { isLoading, userLogin } = useLogin()
+
   const { control, handleSubmit } = useForm({
     resolver: yupResolver(loginSchema),
     defaultValues: {

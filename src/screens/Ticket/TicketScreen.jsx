@@ -1,37 +1,17 @@
 import { View, Animated, Platform } from 'react-native'
-import { useEffect, useRef, useState } from 'react'
-import { getTickets } from './services/tickets'
-import { Loader } from '../../components/Loader'
+import { useRef } from 'react'
+import { NoContent, NoLogged, Loader } from '../../components'
 import { Backdrop, CardItem } from './components'
 import { carouselConfig } from './utils'
 import { styles } from './TicketScreen.styles'
-import { NoContent, NoLogged } from '../../components'
-import useCurrentUser from '../../hooks/useCurrentUser'
+import { useTickets } from './hooks/useTickets'
 
 const { ITEM_SIZE, EMPTY_ITEM_SIZE } = carouselConfig
 
 export const TicketScreen = () => {
-  const { currentUser, reloadUserData } = useCurrentUser()
-  const [tickets, setTickets] = useState([])
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState()
+  const { error, isLoading, tickets } = useTickets()
 
   const scrollX = useRef(new Animated.Value(0)).current
-
-  useEffect(() => {
-    setError(null)
-    setIsLoading(true)
-    getTickets()
-      .then(data => {
-        if (data.length !== 0) {
-          setTickets([{ movieId: 'empty-left' }, ...data, { movieId: 'empty-right' }])
-        } else {
-          setTickets([])
-        }
-      })
-      .catch(err => setError(err))
-      .finally(() => setIsLoading(false))
-  }, [currentUser, reloadUserData])
 
   if (error) {
     return <NoLogged />
