@@ -1,8 +1,9 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { StyleSheet } from 'react-native'
 import { COLORS, SPACING } from '../utils/theme'
-import { HomeIcon, IconContainer, TicketIcon, UserIcon, CartIcon } from '../icons'
-import { HomeScreen, TicketScreen, CartScreen, ProfileScreen } from '../screens'
+import { HomeIcon, IconContainer, TicketIcon, UserIcon, CartIcon, QrCodeIcon } from '../icons'
+import { HomeScreen, TicketScreen, CartScreen, ProfileScreen, QrCodeScreen } from '../screens'
+import useCurrentUser from '../hooks/useCurrentUser'
 
 const Tab = createBottomTabNavigator()
 
@@ -10,7 +11,8 @@ const TAB_ICON = {
   Home: <HomeIcon />,
   Tickets: <TicketIcon />,
   Cart: <CartIcon />,
-  Profile: <UserIcon />
+  Profile: <UserIcon />,
+  QrCode: <QrCodeIcon />
 }
 
 const screenOptions = ({ route }) => {
@@ -30,23 +32,37 @@ const screenOptions = ({ route }) => {
 }
 
 export function HomeTabs () {
+  const { currentUser } = useCurrentUser()
+
   return (
     <Tab.Navigator screenOptions={screenOptions}>
-      <Tab.Screen
-        name='Home'
-        options={{ title: 'Inicio' }}
-        component={HomeScreen}
-      />
-      <Tab.Screen
-        name='Tickets'
-        options={{ title: 'Tickets' }}
-        component={TicketScreen}
-      />
-      <Tab.Screen
-        name='Cart'
-        options={{ title: 'Carrito' }}
-        component={CartScreen}
-      />
+      {currentUser?.email === 'admin@gmail.com'
+        ? (
+          <Tab.Screen
+            name='QrCode'
+            options={{ title: 'Escanear QR' }}
+            component={QrCodeScreen}
+          />
+          )
+        : (
+          <>
+            <Tab.Screen
+              name='Home'
+              options={{ title: 'Inicio' }}
+              component={HomeScreen}
+            />
+            <Tab.Screen
+              name='Tickets'
+              options={{ title: 'Tickets' }}
+              component={TicketScreen}
+            />
+            <Tab.Screen
+              name='Cart'
+              options={{ title: 'Carrito' }}
+              component={CartScreen}
+            />
+          </>
+          )}
       <Tab.Screen
         name='Profile'
         options={{ title: 'Perfil' }}
