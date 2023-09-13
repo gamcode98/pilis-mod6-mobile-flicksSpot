@@ -27,5 +27,8 @@ export const styles = StyleSheet.create({
     marginTop: 16,
     backgroundColor: COLORS.primary
   },
-  buttonTitle: { fontWeight: 'bold' }
+  buttonTitle: {
+    fontWeight: 'bold',
+    textAlign: 'center'
+  }
 })

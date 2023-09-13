@@ -37,3 +37,14 @@ export const loginSchema = yup.object({
   password: yup.string()
     .required('La contraseña es obligatoria')
 }).required()
+
+export const creditCardSchema = yup.object({
+  holder: yup.string()
+    .required('Campo obligatorio'),
+  cvv: yup.string()
+    .required('Campo obligatorio'),
+  expiration: yup.string()
+    .required('Campo obligatorio'),
+  number: yup.string()
+    .required('Campo obligatorio')
+}).required()

@@ -6,8 +6,8 @@ import { CartItem } from './components/CartItem/CartItem'
 import { useCart } from './hooks/useCart'
 
 export const CartScreen = (props) => {
-  const { route } = props
-  const { cart, isLoading, handlePayment, handleRemoveItem, handleTicketsInCart } = useCart(route)
+  const { route, navigation } = props
+  const { cart, isLoading, handlePayment, goCheckout, handleRemoveItem, handleTicketsInCart } = useCart(route, navigation)
 
   if (isLoading) {
     return <Loader />
@@ -43,7 +43,8 @@ export const CartScreen = (props) => {
                       <Text style={styles.footerTitle}>Total: ${cart.reduce((acc, item) => acc + item.unitPrice * item.quantity, 0)}</Text>
                       <TouchableOpacity
                         style={styles.paymentButton}
-                        onPress={handlePayment}
+                        // onPress={handlePayment}
+                        onPress={goCheckout}
                       >
                         <Text style={styles.buttonTitle}>Pagar</Text>
                       </TouchableOpacity>

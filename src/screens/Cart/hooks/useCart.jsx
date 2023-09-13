@@ -4,7 +4,7 @@ import useCurrentUser from '../../../hooks/useCurrentUser'
 import { SECURE_STORE_KEYS, getItem, removeItem, saveItem } from '../../../utils'
 import { payment } from '../services/payment'
 
-export const useCart = (route) => {
+export const useCart = (route, navigation) => {
   const [cart, setCart] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
   const { currentUser, setReloadUserData } = useCurrentUser()
@@ -86,11 +86,31 @@ export const useCart = (route) => {
       })
   }
 
+  const goCheckout = () => {
+    // if (currentUser === null) {
+    //   ToastAndroid.show('Debes iniciar sesión para poder realizar tu pago', ToastAndroid.SHORT)
+    //   return
+    // }
+
+    const items = cart.map(cartItem => {
+      const { cinemaShowId, title, unitPrice, quantity } = cartItem
+      return {
+        cinemaShowId,
+        title,
+        unitPrice,
+        quantity
+      }
+    })
+
+    navigation.navigate('CheckoutScreen', { items })
+  }
+
   return {
     cart,
     isLoading,
     handleTicketsInCart,
     handleRemoveItem,
-    handlePayment
+    handlePayment,
+    goCheckout
   }
 }
