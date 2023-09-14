@@ -4,10 +4,23 @@ import { EmptyCart, Loader } from '../../components'
 import { styles } from './Cart.styles'
 import { CartItem } from './components/CartItem/CartItem'
 import { useCart } from './hooks/useCart'
+import * as WebBrowser from 'expo-web-browser'
+import { ArrowPathIcon, ArrowTopRightOnSquareIcon, IconContainer } from '../../icons'
 
 export const CartScreen = (props) => {
   const { route } = props
-  const { cart, isLoading, handlePayment, handleRemoveItem, handleTicketsInCart } = useCart(route)
+  const {
+    cart,
+    isLoading,
+    orderUrl,
+    handleRemoveItem,
+    handleTicketsInCart,
+    handleCreateOrder
+  } = useCart(route)
+
+  const goCheckout = async () => {
+    await WebBrowser.openBrowserAsync(orderUrl)
+  }
 
   if (isLoading) {
     return <Loader />
@@ -41,12 +54,26 @@ export const CartScreen = (props) => {
                   return (
                     <View style={styles.footerContainer}>
                       <Text style={styles.footerTitle}>Total: ${cart.reduce((acc, item) => acc + item.unitPrice * item.quantity, 0)}</Text>
-                      <TouchableOpacity
-                        style={styles.paymentButton}
-                        onPress={handlePayment}
-                      >
-                        <Text style={styles.buttonTitle}>Pagar</Text>
-                      </TouchableOpacity>
+
+                      {orderUrl === null
+                        ? (
+                          <TouchableOpacity
+                            style={styles.paymentButton}
+                            onPress={handleCreateOrder}
+                          >
+                            <IconContainer size={24}><ArrowPathIcon /></IconContainer>
+                            <Text style={styles.buttonTitle}>Generar orden de pago</Text>
+                          </TouchableOpacity>
+                          )
+                        : (
+                          <TouchableOpacity
+                            style={styles.paymentButton}
+                            onPress={goCheckout}
+                          >
+                            <IconContainer size={24}><ArrowTopRightOnSquareIcon /></IconContainer>
+                            <Text style={styles.buttonTitle}>Pagar</Text>
+                          </TouchableOpacity>
+                          )}
                     </View>
                   )
                 }}

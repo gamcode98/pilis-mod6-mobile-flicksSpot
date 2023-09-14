@@ -4,4 +4,4 @@ export const SECURE_STORE_KEYS = {
   TOKEN: 'token'
 }
 
-export const BACKEND_URL = 'https://cinema-api-yutm.onrender.com/api/v1'
+export const BACKEND_URL = 'https://gamdev.tech/api/v1'

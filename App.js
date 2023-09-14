@@ -5,6 +5,7 @@ import { HomeTabs } from './src/navigation/HomeTabs'
 import { CinemaShowDetailScreen, OnboardingScreen } from './src/screens'
 import { SECURE_STORE_KEYS, getItem } from './src/utils'
 import { UserProvider } from './src/contexts/UserContext'
+
 const Stack = createNativeStackNavigator()
 
 export default function App () {
