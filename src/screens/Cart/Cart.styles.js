@@ -25,7 +25,11 @@ export const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 4,
     marginTop: 16,
-    backgroundColor: COLORS.primary
+    backgroundColor: COLORS.primary,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: 8,
+    alignItems: 'center'
   },
   buttonTitle: {
     fontWeight: 'bold',

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { HomeTabs } from './src/navigation/HomeTabs'
-import { CinemaShowDetailScreen, OnboardingScreen, CheckoutScreen } from './src/screens'
+import { CinemaShowDetailScreen, OnboardingScreen } from './src/screens'
 import { SECURE_STORE_KEYS, getItem } from './src/utils'
 import { UserProvider } from './src/contexts/UserContext'
 
@@ -36,7 +36,6 @@ export default function App () {
             <Stack.Screen name='Onboarding' component={OnboardingScreen} />
             <Stack.Screen name='HomeTabs' component={HomeTabs} />
             <Stack.Screen name='CinemaShowDetailScreen' component={CinemaShowDetailScreen} />
-            <Stack.Screen name='CheckoutScreen' component={CheckoutScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       </UserProvider>
@@ -49,7 +48,6 @@ export default function App () {
             <Stack.Screen name='Onboarding' component={OnboardingScreen} />
             <Stack.Screen name='HomeTabs' component={HomeTabs} />
             <Stack.Screen name='CinemaShowDetailScreen' component={CinemaShowDetailScreen} />
-            <Stack.Screen name='CheckoutScreen' component={CheckoutScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       </UserProvider>
