@@ -9,6 +9,7 @@ import { AdjustmentsIcon, IconContainer, XCircleIcon } from '../../icons'
 import { useMovies } from './hooks/useMovies'
 import useCurrentUser from '../../hooks/useCurrentUser'
 import { COLORS } from '../../utils/theme'
+import { NotFound } from '../../components/NotFound/NotFound'
 
 const { FULL_SIZE } = configCarousel
 
@@ -16,8 +17,17 @@ export const HomeScreen = ({ navigation }) => {
   const { currentUser } = useCurrentUser()
   const scrollX = useRef(new Animated.Value(0)).current
   const [modalVisible, setModalVisible] = useState(false)
+  const [value, setValue] = useState('')
 
   const { isLoading, movies } = useMovies()
+
+  const filteredMovies = movies.filter(movie => {
+    return movie.title.toLowerCase().includes(value.toLowerCase())
+  })
+
+  const handleChangeInput = (text) => {
+    setValue(text)
+  }
 
   return (
     <>
@@ -41,6 +51,8 @@ export const HomeScreen = ({ navigation }) => {
 
             <View style={styles.searchContainer}>
               <TextInput
+                value={value}
+                onChangeText={handleChangeInput}
                 style={styles.searchBar}
                 placeholder='Buscar...'
               />
@@ -108,27 +120,33 @@ export const HomeScreen = ({ navigation }) => {
 
             </Modal>
 
-            <Text style={styles.title}>En cartelera</Text>
+            <Text style={styles.title}>{filteredMovies.length !== 0 && 'En cartelera'}</Text>
 
-            <Animated.FlatList
-              data={movies}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              snapToInterval={FULL_SIZE}
-              decelerationRate='fast'
-              onScroll={Animated.event(
-                [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-                { useNativeDriver: true }
-              )}
-              keyExtractor={item => item.id}
-              renderItem={({ item, index }) =>
-                <MovieItem
-                  item={item}
-                  index={index}
-                  scrollX={scrollX}
-                  navigation={navigation}
-                />}
-            />
+            {filteredMovies.length === 0
+              ? (
+                <NotFound />
+                )
+              : (
+                <Animated.FlatList
+                  data={filteredMovies}
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  snapToInterval={FULL_SIZE}
+                  decelerationRate='fast'
+                  onScroll={Animated.event(
+                    [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+                    { useNativeDriver: true }
+                  )}
+                  keyExtractor={item => item.id}
+                  renderItem={({ item, index }) =>
+                    <MovieItem
+                      item={item}
+                      index={index}
+                      scrollX={scrollX}
+                      navigation={navigation}
+                    />}
+                />
+                )}
           </View>
       }
     </>
