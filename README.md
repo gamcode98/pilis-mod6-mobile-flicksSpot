@@ -1,6 +1,19 @@
 # FlicksSpot
 
-Instrucciones:
+## Integrantes
+
+| Nombres    | Apellidos    |
+| ------------ | ------------ |
+| Fabián Abel    | Sajama   |
+| Gabriel Alejandro    | Mamani    |
+| Micaela    | Zerpa    |
+| Sebastian Rafael    | Rojas    |
+
+## Alcance del sistema
+
+[Alcance del sistema - draw.io](https://app.diagrams.net/#G1sdrcfy_VNAdn12RiUqKAnAHyBzrcOC2o)
+
+## Instrucciones
 
 Clonar el repositorio en donde se encuentra la API:
 
