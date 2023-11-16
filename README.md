@@ -1,5 +1,9 @@
 # FlicksSpot
 
+## Video presentación
+
+[Enlace al video en Google Drive](https://drive.google.com/file/d/1RExxKKuQv5jkFTin27g0z2qe50g27klk/view)
+
 ## Integrantes
 
 | Nombres    | Apellidos    |
